@@ -10,17 +10,11 @@ import java.io.File;
  */
 public final class TestClientMain {
 
-    private TestClientMain() {
-    }
 
     /**
      * 模拟客户端数量.
      */
     private static final int N_THREADS = 10;
-    /**
-     * 文件路径.
-     */
-    private static final String PATH_TO_FILE = "/home/norman/ubuntu-14.04.5-desktop-amd64.iso";
 
     /**
      * 开启N_THREADS个客户端.
@@ -28,6 +22,10 @@ public final class TestClientMain {
      * @throws InterruptedException 中断异常.
      */
     public static void main(String[] args) throws InterruptedException {
+
+        //文件路径
+        final String pathToFile = "/home/norman/ubuntu-14.04.5-desktop-amd64.iso";
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -35,7 +33,7 @@ public final class TestClientMain {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            Client.send(new File(PATH_TO_FILE));
+                            Client.send(new File(pathToFile));
                         }
                     }).start();
                 }

@@ -16,21 +16,14 @@ import java.net.Socket;
  */
 public class Client {
     /**
-     * 默认服务器端口号.
-     */
-    private static int DEFAULT_SERVER_PORT = 12345;
-    /**
-     * 默认服务器ip地址.
-     */
-    private static String DEFAULT_SERVER_IP = "192.168.199.101";
-
-    /**
      * 发送文件.
      *
      * @param file 要进行传输的文件
      */
     public static void send(File file) {
-        send(DEFAULT_SERVER_IP, DEFAULT_SERVER_PORT, file);
+        String  defaultServerIp = "192.168.199.101";
+        int  defaultServerPort = 12345;
+        send(defaultServerIp, defaultServerPort, file);
         return;
     }
 
@@ -39,7 +32,7 @@ public class Client {
      *
      * @param ip   ip address
      * @param port port
-     * @param file 文件类
+     * @param file 文件对象
      */
     public static void send(String ip, int port, File file) {
         if (!file.exists()) {
@@ -72,18 +65,20 @@ public class Client {
             fis.close();
             socket.shutdownOutput();
 
+            //接受服务器传回的消息
             String temp;
+            long reply = 0;
             while ((temp = in.readLine()) != null) {
                 try {
-                    long reply = Long.parseLong(temp);
-                    System.out.println("客户端收到服务器响应: "
+                    reply = Long.parseLong(temp);
+                } catch (Exception ex) {
+                    System.out.println("数字解析出错");
+                }
+                System.out.println("客户端收到服务器响应: "
                             + temp
                             + " ,文件上传成功率: "
                             + reply / file.length() / 1.0 * 100
                             + " % ");
-                } catch (Exception ex) {
-                    System.out.println("数字解析出错");
-                }
             }
         } catch (IOException ex) {
             ex.printStackTrace();
